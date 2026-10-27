@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: pisocompartido-db
+    environment:
+      POSTGRES_DB: pisocompartido
+      POSTGRES_USER: piso
+      POSTGRES_PASSWORD: piso123
+    ports:
+      - "5433:5432"
+    volumes:
+      - datos-postgres:/var/lib/postgresql/data
+
+volumes:
+  datos-postgres:
