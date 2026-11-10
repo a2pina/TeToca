@@ -51,4 +51,5 @@ public interface AsignacionRepository extends JpaRepository<Asignacion, Long> {
     List<Asignacion> buscarCompletadas(@Param("pisoId") Long pisoId);
     boolean existsByTarea_Piso_IdAndFechaLimite(Long pisoId, LocalDate fechaLimite);
     List<Asignacion> findByTarea_Piso_IdAndFechaLimite(Long pisoId, LocalDate fechaLimite);
+    List<Asignacion> findByTarea_Piso_IdAndFechaLimiteBetween(Long pisoId, LocalDate desde, LocalDate hasta);
 }

@@ -1,13 +1,16 @@
 import { useSesion } from '../context/SesionContext';
-
+import Logo from './Logo';
 export default function Cabecera() {
     const { usuario, cerrarSesion } = useSesion();
 
     return (
         <header className="cabecera">
-            <div>
-                <h1 className="marca">Te<span>Toca</span></h1>
-                <p className="eslogan">Se hace lo que se puede.</p>
+            <div className="logo">
+                <Logo tamano={48} />
+                <div>
+                    <h1 className="marca">Te<span>Toca</span></h1>
+                    <p className="eslogan">Se hace lo que se puede.</p>
+                </div>
             </div>
             <div className="usuario">
         <span>

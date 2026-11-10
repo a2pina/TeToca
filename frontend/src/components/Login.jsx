@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSesion } from '../context/SesionContext.jsx';
-
+import Logo from './Logo';
 export default function Login({ alRegistrarse }) {
     const { iniciarSesion } = useSesion();
     const [username, setUsername] = useState('');
@@ -24,6 +24,7 @@ export default function Login({ alRegistrarse }) {
     return (
         <main className="acceso">
             <form className="tarjeta-acceso" onSubmit={enviar}>
+                <div className="logo-acceso"><Logo tamano={72} /></div>
                 <h1 className="marca">Te<span>Toca</span></h1>
                 <p className="eslogan">Se hace lo que se puede.</p>
                 <label>Usuario

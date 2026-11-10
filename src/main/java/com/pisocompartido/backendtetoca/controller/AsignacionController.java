@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@PreAuthorize("@acceso.puedeVerPiso(#pisoId, authentication)")
+
 @RequestMapping("/api")
 public class AsignacionController {
 
@@ -29,10 +29,13 @@ public class AsignacionController {
     }
 
     @PatchMapping("/asignaciones/{id}/completar")
-    public AsignacionResponse completar(@PathVariable Long id) {
-        return asignacionService.completar(id);
+    public AsignacionResponse completar(@PathVariable Long id,
+                                        org.springframework.security.core.Authentication auth) {
+        boolean esAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        return asignacionService.completar(id, auth.getName(), esAdmin);
     }
-
+    @PreAuthorize("@acceso.puedeVerPiso(#pisoId, authentication)")
     @GetMapping("/pisos/{pisoId}/asignaciones")
     public List<AsignacionResponse> listar(@PathVariable Long pisoId,
                                            @RequestParam(required = false) EstadoAsignacion estado) {
@@ -44,5 +47,13 @@ public class AsignacionController {
     @org.springframework.security.access.prepost.PreAuthorize("@acceso.puedeVerPiso(#pisoId, authentication)")
     public List<AsignacionResponse> repartir(@PathVariable Long pisoId) {
         return asignacionService.repartirSemana(pisoId);
+    }
+    @PatchMapping("/asignaciones/{id}/conviviente")
+    public AsignacionResponse reasignar(@PathVariable Long id,
+                                        @Valid @RequestBody com.pisocompartido.backendtetoca.dto.ReasignarRequest request,
+                                        org.springframework.security.core.Authentication auth) {
+        boolean esAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        return asignacionService.reasignar(id, request.convivienteId(), auth.getName(), esAdmin);
     }
 }
