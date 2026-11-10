@@ -6,10 +6,12 @@ import com.pisocompartido.backendtetoca.model.EstadoAsignacion;
 import com.pisocompartido.backendtetoca.service.AsignacionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@PreAuthorize("@acceso.puedeVerPiso(#pisoId, authentication)")
 @RequestMapping("/api")
 public class AsignacionController {
 

@@ -5,10 +5,12 @@ import com.pisocompartido.backendtetoca.dto.CrearConvivienteRequest;
 import com.pisocompartido.backendtetoca.service.ConvivienteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@PreAuthorize("@acceso.puedeVerPiso(#pisoId, authentication)")
 @RequestMapping("/api/pisos/{pisoId}/convivientes")
 public class ConvivienteController {
 

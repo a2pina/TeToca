@@ -44,6 +44,12 @@ public class ManejadorGlobalErrores {
                 .body(new RespuestaError(400, "Formato de la petición incorrecto", null));
     }
 
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<RespuestaError> sinPermiso(Exception ex) {
+        return ResponseEntity.status(403)
+                .body(new RespuestaError(403, "No tienes permiso para acceder a este piso", null));
+    }
+
     // 4. Cualquier otro error
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RespuestaError> errorGeneral(Exception ex) {
