@@ -2,6 +2,7 @@ package com.pisocompartido.backendtetoca.controller;
 
 import com.pisocompartido.backendtetoca.dto.ConvivienteResponse;
 import com.pisocompartido.backendtetoca.dto.CrearConvivienteRequest;
+import com.pisocompartido.backendtetoca.dto.RankingResponse;
 import com.pisocompartido.backendtetoca.service.ConvivienteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,10 @@ public class ConvivienteController {
     public ConvivienteResponse crear(@PathVariable Long pisoId,
                                      @Valid @RequestBody CrearConvivienteRequest request) {
         return convivienteService.crear(pisoId, request);
+    }
+    @GetMapping("/ranking")
+    public List<RankingResponse> ranking(@PathVariable Long pisoId) {
+        return convivienteService.ranking(pisoId);
     }
 
     @GetMapping
