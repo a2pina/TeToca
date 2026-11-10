@@ -37,6 +37,21 @@ public class TareaService {
                 .map(TareaResponse::from)
                 .toList();
     }
+    @Transactional
+    public void crearTareasBasicas(Piso piso) {
+        tareaRepository.saveAll(List.of(
+                new Tarea("Fregar los platos", 1, 7, piso),
+                new Tarea("Sacar la basura", 1, 7, piso),
+                new Tarea("Vaciar el lavavajillas", 1, 7, piso),
+                new Tarea("Poner el lavavajillas", 2, 7, piso),
+                new Tarea("Limpiar el polvo", 2, 1, piso),
+                new Tarea("Regar las plantas", 2, 1, piso),
+                new Tarea("Cambiar las sábanas", 2, 1, piso),
+                new Tarea("Doblar la ropa", 2, 2, piso),
+                new Tarea("Limpiar el baño", 3, 2, piso),
+                new Tarea("Barrer y fregar zonas comunes", 3, 2, piso),
+                new Tarea("Poner y tender la lavadora", 3, 2, piso)));
+    }
 
     public Tarea buscarEntidad(Long id) {
         return tareaRepository.findById(id)

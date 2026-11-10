@@ -19,25 +19,38 @@ public class AuthService {
     private final PisoRepository pisoRepository;
     private final ConvivienteRepository convivienteRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TareaService tareaService;
+
 
     public AuthService(PisoRepository pisoRepository, ConvivienteRepository convivienteRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder, TareaService tareaService) {
         this.pisoRepository = pisoRepository;
         this.convivienteRepository = convivienteRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tareaService = tareaService;
+
     }
 
     @Transactional
     public ConvivienteResponse registrar(RegistroRequest request) {
-        Piso piso = pisoRepository.findByCodigo(request.codigoPiso().trim().toUpperCase())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "No existe ningún piso con ese código"));
-
         if (convivienteRepository.existsByUsername(request.username())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Ese nombre de usuario ya está en uso");
         }
         if (convivienteRepository.existsByEmail(request.email())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Ese email ya está registrado");
+        }
+
+        Piso piso;
+        if (request.nombrePiso() != null && !request.nombrePiso().isBlank()) {
+            piso = pisoRepository.save(new Piso(request.nombrePiso().trim()));
+            tareaService.crearTareasBasicas(piso);
+        } else if (request.codigoPiso() != null && !request.codigoPiso().isBlank()) {
+            piso = pisoRepository.findByCodigo(request.codigoPiso().trim().toUpperCase())
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "No existe ningún piso con ese código"));
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Indica el código de un piso o el nombre de uno nuevo");
         }
 
         Conviviente conviviente = convivienteRepository.save(new Conviviente(

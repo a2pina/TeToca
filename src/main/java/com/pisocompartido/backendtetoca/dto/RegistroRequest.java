@@ -3,7 +3,8 @@ package com.pisocompartido.backendtetoca.dto;
 import jakarta.validation.constraints.*;
 
 public record RegistroRequest(
-        @NotBlank(message = "El código de piso es obligatorio") String codigoPiso,
+        @Size(max = 10) String codigoPiso,
+        @Size(max = 100) String nombrePiso,
         @NotBlank(message = "El nombre es obligatorio") @Size(max = 100) String nombre,
         @NotBlank(message = "El usuario es obligatorio") @Size(min = 3, max = 50) String username,
         @NotBlank(message = "El email es obligatorio") @Email(message = "El email no es válido") String email,

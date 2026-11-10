@@ -3,11 +3,13 @@ package com.pisocompartido.backendtetoca.dto;
 import com.pisocompartido.backendtetoca.model.Conviviente;
 
 public record UsuarioResponse(Long id, String nombre, String username, String rol,
-                              Long pisoId, String pisoNombre) {
+                              Long pisoId, String pisoNombre, String pisoCodigo) {
 
     public static UsuarioResponse from(Conviviente c) {
+        boolean tienePiso = c.getPiso() != null;
         return new UsuarioResponse(c.getId(), c.getNombre(), c.getUsername(), c.getRol().name(),
-                c.getPiso() != null ? c.getPiso().getId() : null,
-                c.getPiso() != null ? c.getPiso().getNombre() : null);
+                tienePiso ? c.getPiso().getId() : null,
+                tienePiso ? c.getPiso().getNombre() : null,
+                tienePiso ? c.getPiso().getCodigo() : null);
     }
 }

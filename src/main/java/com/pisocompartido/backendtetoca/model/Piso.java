@@ -25,7 +25,7 @@ public class Piso {
     public Piso(String nombre) {
         this.nombre = nombre;
         this.fechaCreacion = LocalDateTime.now();
-        this.codigo = generarCodigo();
+        this.codigo = generarCodigo(nombre);
     }
 
     public Long getId() { return id; }
@@ -34,13 +34,12 @@ public class Piso {
 
     public String getCodigo() { return codigo; }
 
-    private static String generarCodigo() {
-        String letras = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        java.security.SecureRandom aleatorio = new java.security.SecureRandom();
-        StringBuilder codigo = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            codigo.append(letras.charAt(aleatorio.nextInt(letras.length())));
-        }
-        return codigo.toString();
+    private static String generarCodigo(String nombre) {
+        String limpio = java.text.Normalizer.normalize(nombre, java.text.Normalizer.Form.NFD)
+                .replaceAll("[^A-Za-z]", "")
+                .toUpperCase();
+        String prefijo = limpio.isEmpty() ? "PISO" : limpio.substring(0, Math.min(5, limpio.length()));
+        int numero = 1000 + new java.security.SecureRandom().nextInt(9000);
+        return prefijo + "-" + numero;
     }
 }
