@@ -16,9 +16,19 @@ public class Conviviente {
     @Column(nullable = false, unique = true, length = 150)
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "piso_id")
     private Piso piso;
+
+    @Column(unique = true, length = 50)
+    private String username;
+
+    @Column(length = 100)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Rol rol = Rol.CONVIVIENTE;
 
     protected Conviviente() { }
 
@@ -28,8 +38,18 @@ public class Conviviente {
         this.piso = piso;
     }
 
+    public Conviviente(String nombre, String email, Piso piso, String username, String password) {
+        this(nombre, email, piso);
+        this.username = username;
+        this.password = password;
+    }
+
     public Long getId() { return id; }
     public String getNombre() { return nombre; }
     public String getEmail() { return email; }
     public Piso getPiso() { return piso; }
+    public String getUsername() { return username; }
+    public String getPassword() { return password; }
+    public Rol getRol() { return rol; }
+
 }
