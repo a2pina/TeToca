@@ -2,6 +2,7 @@ package com.pisocompartido.backendtetoca.controller;
 
 import com.pisocompartido.backendtetoca.dto.ConvivienteResponse;
 import com.pisocompartido.backendtetoca.dto.RegistroRequest;
+import com.pisocompartido.backendtetoca.dto.UsuarioResponse;
 import com.pisocompartido.backendtetoca.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,5 +22,10 @@ public class AuthController {
     @ResponseStatus(HttpStatus.CREATED)
     public ConvivienteResponse registrar(@Valid @RequestBody RegistroRequest request) {
         return authService.registrar(request);
+    }
+
+    @GetMapping("/yo")
+    public UsuarioResponse yo(java.security.Principal principal) {
+        return authService.usuarioActual(principal.getName());
     }
 }

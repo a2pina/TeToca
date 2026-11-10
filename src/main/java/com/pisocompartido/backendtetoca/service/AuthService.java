@@ -2,6 +2,7 @@ package com.pisocompartido.backendtetoca.service;
 
 import com.pisocompartido.backendtetoca.dto.ConvivienteResponse;
 import com.pisocompartido.backendtetoca.dto.RegistroRequest;
+import com.pisocompartido.backendtetoca.dto.UsuarioResponse;
 import com.pisocompartido.backendtetoca.model.Conviviente;
 import com.pisocompartido.backendtetoca.model.Piso;
 import com.pisocompartido.backendtetoca.repository.ConvivienteRepository;
@@ -43,5 +44,12 @@ public class AuthService {
                 request.nombre(), request.email(), piso,
                 request.username(), passwordEncoder.encode(request.password())));
         return ConvivienteResponse.from(conviviente);
+    }
+
+    @Transactional(readOnly = true)
+    public UsuarioResponse usuarioActual(String username) {
+        return convivienteRepository.findByUsername(username)
+                .map(UsuarioResponse::from)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
     }
 }
