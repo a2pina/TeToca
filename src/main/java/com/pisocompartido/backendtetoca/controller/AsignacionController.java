@@ -38,4 +38,11 @@ public class AsignacionController {
                                            @RequestParam(required = false) EstadoAsignacion estado) {
         return asignacionService.listar(pisoId, estado);
     }
+
+    @PostMapping("/pisos/{pisoId}/reparto")
+    @ResponseStatus(HttpStatus.CREATED)
+    @org.springframework.security.access.prepost.PreAuthorize("@acceso.puedeVerPiso(#pisoId, authentication)")
+    public List<AsignacionResponse> repartir(@PathVariable Long pisoId) {
+        return asignacionService.repartirSemana(pisoId);
+    }
 }
