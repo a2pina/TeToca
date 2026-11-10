@@ -5,9 +5,11 @@ import com.pisocompartido.backendtetoca.dto.PisoResponse;
 import com.pisocompartido.backendtetoca.service.PisoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@PreAuthorize("@acceso.puedeVerPiso(#id, authentication)")
 @RequestMapping("/api/pisos")
 public class PisoController {
 
