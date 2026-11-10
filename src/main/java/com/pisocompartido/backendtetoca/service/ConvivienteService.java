@@ -2,6 +2,7 @@ package com.pisocompartido.backendtetoca.service;
 
 import com.pisocompartido.backendtetoca.dto.ConvivienteResponse;
 import com.pisocompartido.backendtetoca.dto.CrearConvivienteRequest;
+import com.pisocompartido.backendtetoca.dto.RankingResponse;
 import com.pisocompartido.backendtetoca.model.Conviviente;
 import com.pisocompartido.backendtetoca.model.Piso;
 import com.pisocompartido.backendtetoca.repository.ConvivienteRepository;
@@ -48,5 +49,15 @@ public class ConvivienteService {
         return convivienteRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "No existe el conviviente " + id));
+    }
+    @Transactional(readOnly = true)
+    public List<RankingResponse> ranking(Long pisoId) {
+        pisoService.buscarEntidad(pisoId);
+        java.time.LocalDateTime inicioMes = java.time.LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        List<com.pisocompartido.backendtetoca.repository.PuntosConviviente> filas =
+                convivienteRepository.ranking(pisoId, inicioMes);
+        return java.util.stream.IntStream.range(0, filas.size())
+                .mapToObj(i -> RankingResponse.from(i + 1, filas.get(i)))
+                .toList();
     }
 }
