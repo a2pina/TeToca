@@ -4,4 +4,5 @@ import com.pisocompartido.backendtetoca.model.Piso;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PisoRepository extends JpaRepository<Piso, Long> {
+    java.util.Optional<Piso> findByCodigo(String codigo);
 }

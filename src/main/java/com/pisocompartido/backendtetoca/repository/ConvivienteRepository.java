@@ -9,4 +9,7 @@ public interface ConvivienteRepository extends JpaRepository<Conviviente, Long> 
     List<Conviviente> findByPisoId(Long pisoId);
 
     boolean existsByEmail(String email);
+
+    java.util.Optional<Conviviente> findByUsername(String username);
+    boolean existsByUsername(String username);
 }
