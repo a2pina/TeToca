@@ -25,7 +25,8 @@ public class TareaService {
     @Transactional
     public TareaResponse crear(Long pisoId, CrearTareaRequest request) {
         Piso piso = pisoService.buscarEntidad(pisoId);
-        Tarea tarea = tareaRepository.save(new Tarea(request.nombre(), request.puntos(), piso));
+        Tarea tarea = tareaRepository.save(
+                new Tarea(request.nombre(), request.dificultad(), request.frecuenciaSemanal(), piso));
         return TareaResponse.from(tarea);
     }
 

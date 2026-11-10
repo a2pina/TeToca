@@ -14,7 +14,10 @@ public class Tarea {
     private String nombre;
 
     @Column(nullable = false)
-    private int puntos;
+    private int dificultad;
+
+    @Column(name = "frecuencia_semanal", nullable = false)
+    private int frecuenciaSemanal;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "piso_id")
@@ -22,14 +25,16 @@ public class Tarea {
 
     protected Tarea() { }
 
-    public Tarea(String nombre, int puntos, Piso piso) {
+    public Tarea(String nombre, int dificultad, int frecuenciaSemanal, Piso piso) {
         this.nombre = nombre;
-        this.puntos = puntos;
+        this.dificultad = dificultad;
+        this.frecuenciaSemanal = frecuenciaSemanal;
         this.piso = piso;
     }
 
     public Long getId() { return id; }
     public String getNombre() { return nombre; }
-    public int getPuntos() { return puntos; }
+    public int getDificultad() { return dificultad; }
+    public int getFrecuenciaSemanal() { return frecuenciaSemanal; }
     public Piso getPiso() { return piso; }
 }
