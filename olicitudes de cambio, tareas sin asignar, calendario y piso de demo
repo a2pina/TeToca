@@ -1,0 +1,36 @@
+*   [33mf7e3e41[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge pull request #21 from a2pina/frontend/base
+[31m|[m[32m\[m  
+[31m|[m * [33m4dbc881[m[33m ([m[1;31morigin/frontend/base[m[33m, [m[1;32mfrontend/base[m[33m)[m feat: reparto semanal equitativo, código de piso visible y mejoras del tablero
+[31m|[m[31m/[m  
+*   [33me684ad1[m Merge pull request #20 from a2pina/backend/ranking
+[33m|[m[34m\[m  
+[33m|[m * [33mbadcf5e[m[33m ([m[1;31morigin/backend/ranking[m[33m, [m[1;32mbackend/ranking[m[33m)[m feat(backend): ranking mensual de puntos por conviviente
+[33m|[m[33m/[m  
+*   [33ma2821ef[m Merge pull request #19 from a2pina/backend/usuario-actual
+[35m|[m[36m\[m  
+[35m|[m * [33m27e250e[m[33m ([m[1;31morigin/backend/usuario-actual[m[33m, [m[1;32mbackend/usuario-actual[m[33m)[m feat(backend): cada conviviente solo accede a su piso (seguridad a nivel de método)
+* [36m|[m [33m75adf00[m Merge pull request #18 from a2pina/backend/usuario-actual
+[1;31m|[m[36m\[m[36m|[m 
+[1;31m|[m * [33m6ac6802[m feat(backend): ruta /api/auth/yo con los datos del usuario identificado
+[1;31m|[m[1;31m/[m  
+*   [33mbad192c[m Merge pull request #17 from a2pina/backend/seguridad
+[1;33m|[m[1;34m\[m  
+[1;33m|[m * [33m240383b[m[33m ([m[1;31morigin/backend/seguridad[m[33m, [m[1;32mbackend/seguridad[m[33m)[m feat(backend): registro de convivientes con código de piso
+[1;33m|[m[1;33m/[m  
+*   [33m818d3b1[m Merge pull request #16 from a2pina/backend/dificultad
+[1;35m|[m[1;36m\[m  
+[1;35m|[m * [33m426c13f[m[33m ([m[1;31morigin/backend/dificultad[m[33m, [m[1;32mbackend/dificultad[m[33m)[m Feat(backend): dificultad y frecuencia semanal tareas
+[1;35m|[m[1;35m/[m  
+*   [33me115de5[m Merge pull request #15 from a2pina/backend/datos-swagger
+[31m|[m[32m\[m  
+[31m|[m * [33m2e51196[m[33m ([m[1;31morigin/backend/datos-swagger[m[33m)[m feat(backend): datos de ejemplo (V2) y Swagger UI
+[31m|[m[31m/[m  
+*   [33m6c011ca[m Merge pull request #14 from a2pina/backend/asignaciones
+[33m|[m[34m\[m  
+[33m|[m * [33m0b9ffb4[m[33m ([m[1;31morigin/backend/asignaciones[m[33m)[m feat(backend): asignar, completar y listar asignaciones por estado
+[33m|[m * [33m0fb389f[m feat(backend): entidad Asignación y consultas JPQL por estado
+* [34m|[m [33ma3234d8[m Merge pull request #13 from a2pina/backend/tareas
+[35m|[m[34m\[m[34m|[m 
+[35m|[m * [33m8f0ae0b[m feat(backend): rutas para crear y listar tareas
+[35m|[m * [33m451087c[m feat(backend): entidad y repositorio de Tarea
+[35m|[m[35m/[m  

@@ -29,6 +29,9 @@ public class Asignacion {
     @Column(name = "fecha_completada")
     private LocalDateTime fechaCompletada;
 
+    @Column(name = "fecha_asignacion", nullable = false)
+    private LocalDateTime fechaAsignacion;
+
     protected Asignacion() { }
 
     public Asignacion(Tarea tarea, Conviviente conviviente, LocalDate fechaLimite) {
@@ -36,13 +39,16 @@ public class Asignacion {
         this.conviviente = conviviente;
         this.fechaLimite = fechaLimite;
         this.completada = false;
+        this.fechaAsignacion = LocalDateTime.now();
     }
 
     public void completar() {
         this.completada = true;
         this.fechaCompletada = LocalDateTime.now();
     }
-
+    public void reasignar(Conviviente nuevo) {
+        this.conviviente = nuevo;
+    }
     public EstadoAsignacion getEstado() {
         if (completada) {
             return EstadoAsignacion.COMPLETADA;
@@ -52,7 +58,7 @@ public class Asignacion {
         }
         return EstadoAsignacion.PENDIENTE;
     }
-
+    public LocalDateTime getFechaAsignacion() { return fechaAsignacion; }
     public Long getId() { return id; }
     public Tarea getTarea() { return tarea; }
     public Conviviente getConviviente() { return conviviente; }

@@ -4,7 +4,7 @@ import { api } from '../api/cliente';
 const NIVELES = { 1: 'Baja', 2: 'Media', 3: 'Alta' };
 const VACIA = { nombre: '', dificultad: '1', frecuenciaSemanal: '1' };
 
-export default function Tareas({ pisoId }) {
+export default function Tareas({ pisoId, alCrear }) {
     const [tareas, setTareas] = useState([]);
     const [nueva, setNueva] = useState(VACIA);
     const [error, setError] = useState('');
@@ -25,6 +25,7 @@ export default function Tareas({ pisoId }) {
             });
             setNueva(VACIA);
             cargar();
+            if (alCrear) alCrear();
         } catch (err) {
             setError(err.message);
         }

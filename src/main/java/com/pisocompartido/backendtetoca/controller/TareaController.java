@@ -2,6 +2,7 @@ package com.pisocompartido.backendtetoca.controller;
 
 import com.pisocompartido.backendtetoca.dto.CrearTareaRequest;
 import com.pisocompartido.backendtetoca.dto.TareaResponse;
+import com.pisocompartido.backendtetoca.service.AsignacionService;
 import com.pisocompartido.backendtetoca.service.TareaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,16 +14,18 @@ import java.util.List;
 public class TareaController {
 
     private final TareaService tareaService;
+    private final AsignacionService asignacionService;
 
-    public TareaController(TareaService tareaService) {
+    public TareaController(TareaService tareaService, AsignacionService asignacionService) {
         this.tareaService = tareaService;
+        this.asignacionService = asignacionService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TareaResponse crear(@PathVariable Long pisoId,
-                               @Valid @RequestBody CrearTareaRequest request) {
-        return tareaService.crear(pisoId, request);
+    public TareaResponse crear(@PathVariable Long pisoId, @Valid @RequestBody CrearTareaRequest request) {
+        TareaResponse tarea = tareaService.crear(pisoId, request);
+        return tarea;
     }
 
     @GetMapping

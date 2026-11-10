@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="200" viewBox="0 0 640 200" fill="none" role="img" aria-label="TeToca. Se hace lo que se puede.">
+  <rect width="640" height="200" rx="24" fill="#FDF1DD"/>
+  <g transform="translate(30 30) scale(1.17)">
+    <path d="M48 38 L60 26 L72 38" stroke="#F2A541" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M60 34 V96 M42 96 H78 M22 46 H98" stroke="#1F2328" stroke-width="7" stroke-linecap="round"/>
+    <path d="M22 46 L12 72 M22 46 L32 72 M98 46 L88 72 M98 46 L108 72" stroke="#1F2328" stroke-width="4" stroke-linecap="round"/>
+    <path d="M9 72 Q22 88 35 72 Z M85 72 Q98 88 111 72 Z" fill="#2E7D6B" stroke="#2E7D6B" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+  <text x="200" y="112" font-family="'Space Grotesk', 'Segoe UI', Arial, sans-serif" font-size="72" font-weight="700" fill="#1F2328">Te<tspan fill="#2E7D6B">Toca</tspan></text>
+  <text x="203" y="156" font-family="'Space Grotesk', 'Segoe UI', Arial, sans-serif" font-size="28" font-weight="500" fill="#1F2328">Se hace lo que se puede.</text>
+</svg>

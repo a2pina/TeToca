@@ -50,10 +50,13 @@ public class AsignacionService {
     }
 
     @Transactional
-    public AsignacionResponse completar(Long id) {
+    public AsignacionResponse completar(Long id, String username, boolean esAdmin) {
         Asignacion asignacion = asignacionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "No existe la asignación " + id));
+        if (!esAdmin && !username.equals(asignacion.getConviviente().getUsername())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo puedes completar tus propias tareas");
+        }
         if (asignacion.isCompletada()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "La tarea ya estaba completada");
         }
@@ -82,6 +85,7 @@ public class AsignacionService {
     public List<AsignacionResponse> repartirSemana(Long pisoId) {
         pisoService.buscarEntidad(pisoId);
         LocalDate domingo = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+        LocalDate lunes = domingo.minusDays(6);
 
         List<Conviviente> convivientes = new ArrayList<>(convivienteRepository.findByPisoId(pisoId));
         if (convivientes.isEmpty()) {
@@ -93,7 +97,7 @@ public class AsignacionService {
         convivientes.forEach(c -> carga.put(c.getId(), 0));
 
         // Lo ya hecho esta semana se respeta y cuenta como carga; lo pendiente se vuelve a repartir
-        List<Asignacion> estaSemana = asignacionRepository.findByTarea_Piso_IdAndFechaLimite(pisoId, domingo);
+        List<Asignacion> estaSemana = asignacionRepository.findByTarea_Piso_IdAndFechaLimiteBetween(pisoId, lunes, domingo);
         Set<Long> tareasHechas = new HashSet<>();
         for (Asignacion a : estaSemana) {
             if (a.isCompletada()) {
@@ -108,15 +112,62 @@ public class AsignacionService {
         Collections.shuffle(tareas);
         tareas.sort(Comparator.comparingInt(Tarea::getDificultad).reversed());
 
+        // Las fechas límite se reparten entre hoy y el domingo
+        List<LocalDate> diasRestantes = LocalDate.now().datesUntil(domingo.plusDays(1)).toList();
+
         List<Asignacion> nuevas = new ArrayList<>();
-        for (Tarea tarea : tareas) {
+        for (int i = 0; i < tareas.size(); i++) {
+            Tarea tarea = tareas.get(i);
             Conviviente elegido = convivientes.stream()
                     .min(Comparator.comparingInt(c -> carga.getOrDefault(c.getId(), 0)))
                     .orElseThrow();
             carga.merge(elegido.getId(), tarea.getDificultad(), Integer::sum);
-            nuevas.add(new Asignacion(tarea, elegido, domingo));
+            nuevas.add(new Asignacion(tarea, elegido, diasRestantes.get(i % diasRestantes.size())));
         }
         return asignacionRepository.saveAll(nuevas).stream().map(AsignacionResponse::from).toList();
+    }
+    @Transactional
+    public void asignarSiYaHayReparto(Long tareaId) {
+        Tarea tarea = tareaService.buscarEntidad(tareaId);
+        Long pisoId = tarea.getPiso().getId();
+        LocalDate domingo = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+        List<Asignacion> estaSemana = asignacionRepository.findByTarea_Piso_IdAndFechaLimite(pisoId, domingo);
+        if (estaSemana.isEmpty()) {
+            return; // Aún no hay reparto: entrará en el próximo
+        }
+
+        List<Conviviente> convivientes = new ArrayList<>(convivienteRepository.findByPisoId(pisoId));
+        Collections.shuffle(convivientes);
+        Map<Long, Integer> carga = new HashMap<>();
+        convivientes.forEach(c -> carga.put(c.getId(), 0));
+        for (Asignacion a : estaSemana) {
+            carga.merge(a.getConviviente().getId(), a.getTarea().getDificultad(), Integer::sum);
+        }
+
+        Conviviente elegido = convivientes.stream()
+                .min(Comparator.comparingInt(c -> carga.getOrDefault(c.getId(), 0)))
+                .orElseThrow();
+        asignacionRepository.save(new Asignacion(tarea, elegido, domingo));
+    }
+    @Transactional
+    public AsignacionResponse reasignar(Long id, Long convivienteId, String username, boolean esAdmin) {
+        Asignacion asignacion = asignacionRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe la asignación " + id));
+        if (asignacion.isCompletada()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "No se puede reasignar una tarea completada");
+        }
+        Long pisoId = asignacion.getTarea().getPiso().getId();
+        if (!esAdmin) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Solo el administrador puede reasignar directamente. Pide el cambio a tu compañero");
+        }
+        Conviviente nuevo = convivienteService.buscarEntidad(convivienteId);
+        if (nuevo.getPiso() == null || !nuevo.getPiso().getId().equals(pisoId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El conviviente no pertenece a este piso");
+        }
+        asignacion.reasignar(nuevo);
+        return AsignacionResponse.from(asignacion);
     }
 
 }
