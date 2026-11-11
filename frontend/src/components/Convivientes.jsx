@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/cliente';
 import { useSesion } from '../context/SesionContext';
-
+import { colorDe } from '../colores';
 const iniciales = (nombre) => nombre.trim().split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase();
 
 export default function Convivientes() {
@@ -35,7 +35,7 @@ export default function Convivientes() {
             <ul className="lista-convivientes">
                 {lista.map((c) => (
                     <li key={c.id}>
-                        <span className="avatar avatar-grande" aria-hidden="true">{iniciales(c.nombre)}</span>
+                        <span className="avatar avatar-grande" aria-hidden="true" style={{ background: colorDe(c.id) }}>{iniciales(c.nombre)}</span>
                         <div>
                             <strong>{c.nombre}{c.id === usuario.id && ' (tú)'}</strong>
                             <p className="detalle">{c.email}</p>

@@ -32,4 +32,10 @@ public class TareaController {
     public List<TareaResponse> listar(@PathVariable Long pisoId) {
         return tareaService.listar(pisoId);
     }
+
+    @DeleteMapping("/{tareaId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminar(@PathVariable Long pisoId, @PathVariable Long tareaId) {
+        tareaService.eliminar(pisoId, tareaId);
+    }
 }
