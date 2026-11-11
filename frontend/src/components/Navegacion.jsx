@@ -26,6 +26,7 @@ export default function Navegacion({ vista, setVista }) {
 
             <Item id="tareas">🧹 Tareas del piso</Item>
             <Item id="ranking">🏆 Ranking</Item>
+            <Item id="perfil">👤 Mi perfil</Item>
         </nav>
     );
 }

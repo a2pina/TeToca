@@ -1,0 +1,1 @@
+ALTER TABLE conviviente ADD COLUMN avatar VARCHAR(16);

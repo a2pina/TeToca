@@ -16,6 +16,9 @@ public class Conviviente {
     @Column(nullable = false, unique = true, length = 150)
     private String email;
 
+    @Column(length = 16)
+    private String avatar;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "piso_id")
     private Piso piso;
@@ -43,6 +46,10 @@ public class Conviviente {
         this.username = username;
         this.password = password;
     }
+    public void actualizarPerfil(String nombre, String avatar) {
+        this.nombre = nombre;
+        this.avatar = avatar;
+    }
 
     public Long getId() { return id; }
     public String getNombre() { return nombre; }
@@ -51,5 +58,6 @@ public class Conviviente {
     public String getUsername() { return username; }
     public String getPassword() { return password; }
     public Rol getRol() { return rol; }
+    public String getAvatar() { return avatar; }
 
 }
