@@ -31,6 +31,19 @@ export default function Tareas({ pisoId, alCrear }) {
         }
     };
 
+    const borrar = async (tarea) => {
+        if (!window.confirm(`¿Borrar "${tarea.nombre}"? También se borrarán sus asignaciones.`)) return;
+        setError('');
+        try {
+            await api(`/pisos/${pisoId}/tareas/${tarea.id}`, { method: 'DELETE' });
+            // Quitamos la tarea de la lista sin volver a pedirla a la API
+            setTareas((actuales) => actuales.filter((t) => t.id !== tarea.id));
+            if (alCrear) alCrear();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
     return (
         <section className="ranking">
             <h2>Tareas del piso</h2>
@@ -38,7 +51,11 @@ export default function Tareas({ pisoId, alCrear }) {
                 {tareas.map((t) => (
                     <li key={t.id}>
                         <span>{t.nombre}</span>
-                        <span className="detalle">{NIVELES[t.dificultad]} · {t.frecuenciaSemanal}/semana</span>
+                        <span className="tarea-acciones">
+                            <span className="detalle">{NIVELES[t.dificultad]} · {t.frecuenciaSemanal}/semana</span>
+                            <button type="button" className="boton-borrar" onClick={() => borrar(t)}
+                                    aria-label={`Borrar ${t.nombre}`}>Borrar</button>
+                        </span>
                     </li>
                 ))}
             </ol>

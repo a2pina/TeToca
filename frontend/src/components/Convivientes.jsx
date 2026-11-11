@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/cliente';
 import { useSesion } from '../context/SesionContext';
-
-const iniciales = (nombre) => nombre.trim().split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase();
+import Avatar from './Avatar';
 
 export default function Convivientes() {
     const { usuario } = useSesion();
@@ -35,7 +34,7 @@ export default function Convivientes() {
             <ul className="lista-convivientes">
                 {lista.map((c) => (
                     <li key={c.id}>
-                        <span className="avatar avatar-grande" aria-hidden="true">{iniciales(c.nombre)}</span>
+                        <Avatar id={c.id} nombre={c.nombre} avatar={c.avatar} tamano="grande" />
                         <div>
                             <strong>{c.nombre}{c.id === usuario.id && ' (tú)'}</strong>
                             <p className="detalle">{c.email}</p>

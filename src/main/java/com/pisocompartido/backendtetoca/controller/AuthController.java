@@ -1,12 +1,15 @@
 package com.pisocompartido.backendtetoca.controller;
 
 import com.pisocompartido.backendtetoca.dto.ConvivienteResponse;
+import com.pisocompartido.backendtetoca.dto.PerfilRequest;
 import com.pisocompartido.backendtetoca.dto.RegistroRequest;
 import com.pisocompartido.backendtetoca.dto.UsuarioResponse;
 import com.pisocompartido.backendtetoca.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -27,5 +30,9 @@ public class AuthController {
     @GetMapping("/yo")
     public UsuarioResponse yo(java.security.Principal principal) {
         return authService.usuarioActual(principal.getName());
+    }
+    @PutMapping("/yo")
+    public UsuarioResponse actualizarPerfil(@Valid @RequestBody PerfilRequest request, Principal principal) {
+        return authService.actualizarPerfil(principal.getName(), request);
     }
 }

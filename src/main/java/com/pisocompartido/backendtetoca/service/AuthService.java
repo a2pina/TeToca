@@ -1,6 +1,7 @@
 package com.pisocompartido.backendtetoca.service;
 
 import com.pisocompartido.backendtetoca.dto.ConvivienteResponse;
+import com.pisocompartido.backendtetoca.dto.PerfilRequest;
 import com.pisocompartido.backendtetoca.dto.RegistroRequest;
 import com.pisocompartido.backendtetoca.dto.UsuarioResponse;
 import com.pisocompartido.backendtetoca.model.Conviviente;
@@ -64,5 +65,13 @@ public class AuthService {
         return convivienteRepository.findByUsername(username)
                 .map(UsuarioResponse::from)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+    }
+
+    @Transactional
+    public UsuarioResponse actualizarPerfil(String username, PerfilRequest request) {
+        Conviviente conviviente = convivienteRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        conviviente.actualizarPerfil(request.nombre().trim(), request.avatar());
+        return usuarioActual(username);
     }
 }

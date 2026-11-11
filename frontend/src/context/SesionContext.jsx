@@ -36,7 +36,7 @@ export function SesionProvider({ children }) {
     };
 
     return (
-        <SesionContext.Provider value={{ usuario, cargando, iniciarSesion, cerrarSesion }}>
+        <SesionContext.Provider value={{ usuario, cargando, iniciarSesion, cerrarSesion, actualizarUsuario: setUsuario }}>
             {children}
         </SesionContext.Provider>
     );

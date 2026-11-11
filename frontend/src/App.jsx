@@ -8,6 +8,7 @@ import Tablero from './components/Tablero';
 import Convivientes from './components/Convivientes';
 import Tareas from './components/Tareas';
 import Ranking from './components/Ranking';
+import Perfil from './components/Perfil';
 
 export default function App() {
     const { usuario, cargando } = useSesion();
@@ -33,7 +34,7 @@ export default function App() {
 
     return (
         <>
-            <Cabecera />
+            <Cabecera alPerfil={() => setVista('perfil')} />
             <div className="app">
                 <Navegacion vista={vista} setVista={setVista} />
                 <main className="principal">
@@ -41,6 +42,7 @@ export default function App() {
                     {vista === 'convivientes' && <Convivientes />}
                     {vista === 'tareas' && <div className="contenido"><Tareas pisoId={usuario.pisoId} /></div>}
                     {vista === 'ranking' && <div className="contenido"><Ranking pisoId={usuario.pisoId} usuarioId={usuario.id} /></div>}
+                    {vista === 'perfil' && <div className="contenido"><Perfil /></div>}
                 </main>
             </div>
         </>

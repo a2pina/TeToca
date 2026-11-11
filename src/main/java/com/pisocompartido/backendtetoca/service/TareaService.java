@@ -4,6 +4,7 @@ import com.pisocompartido.backendtetoca.dto.CrearTareaRequest;
 import com.pisocompartido.backendtetoca.dto.TareaResponse;
 import com.pisocompartido.backendtetoca.model.Piso;
 import com.pisocompartido.backendtetoca.model.Tarea;
+import com.pisocompartido.backendtetoca.repository.AsignacionRepository;
 import com.pisocompartido.backendtetoca.repository.TareaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,12 @@ public class TareaService {
 
     private final TareaRepository tareaRepository;
     private final PisoService pisoService;
+    private final AsignacionRepository asignacionRepository;
 
-    public TareaService(TareaRepository tareaRepository, PisoService pisoService) {
+    public TareaService(TareaRepository tareaRepository, PisoService pisoService, AsignacionRepository asignacionRepository) {
         this.tareaRepository = tareaRepository;
         this.pisoService = pisoService;
+        this.asignacionRepository = asignacionRepository;
     }
 
     @Transactional
@@ -57,5 +60,14 @@ public class TareaService {
         return tareaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "No existe la tarea " + id));
+    }
+    @Transactional
+    public void eliminar(Long pisoId, Long tareaId) {
+        Tarea tarea = buscarEntidad(tareaId);
+        if (!tarea.getPiso().getId().equals(pisoId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La tarea no pertenece a este piso");
+        }
+        asignacionRepository.deleteByTarea_Id(tareaId);
+        tareaRepository.delete(tarea);
     }
 }
